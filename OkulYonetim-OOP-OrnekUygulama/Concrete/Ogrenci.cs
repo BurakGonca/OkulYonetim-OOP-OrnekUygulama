@@ -14,16 +14,20 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
         ushort _No;
         IOgrenci.Sube _sube;
         IOgrenci.Cinsiyet _cinsiyet;
+        DateTime _dogumTarihi;
+        
 
-        public Ogrenci(string ad, string soyAd, ushort no, IOgrenci.Sube sube, IOgrenci.Cinsiyet cinsiyet)
+        public Ogrenci(string ad, string soyAd, ushort no, IOgrenci.Sube sube, IOgrenci.Cinsiyet cinsiyet, DateTime dogumTarihi )
         {
             _ad = ad;
             _soyAd = soyAd;
             _No = no;
             _sube = sube;
             _cinsiyet = cinsiyet;
+            _dogumTarihi = dogumTarihi;
+            
         }
-
+        
         public string Ad => _ad;
 
         public string SoyAd => _soyAd;
@@ -32,7 +36,10 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
 
         public IOgrenci.Sube Subesi => _sube;
         public IOgrenci.Cinsiyet cinsiyeti => _cinsiyet;
+        
 
         public List<Ogrenci> OgrenciListesi { get; set; }
+
+        public DateTime dogumTarihi => _dogumTarihi;
     }
 }

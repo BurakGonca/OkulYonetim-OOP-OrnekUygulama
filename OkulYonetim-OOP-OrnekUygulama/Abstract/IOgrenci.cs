@@ -13,6 +13,7 @@ namespace OkulYonetim_OOP_OrnekUygulama.Abstract
         ushort No { get; }
         Sube Subesi { get; }
         Cinsiyet cinsiyeti { get; }
+        DateTime dogumTarihi { get; }
 
         enum Sube
         {
@@ -21,7 +22,7 @@ namespace OkulYonetim_OOP_OrnekUygulama.Abstract
 
         enum Cinsiyet
         {
-            Kadın = 1,
+            Kadin = 1,
             Erkek
         }
 

@@ -26,27 +26,51 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
                     DonguMethod();
                     break;
                 case "2":
-                    Console.Write("Listelemek istediğiniz şubeyi girin (A, B, C): ");
-                    string subeStr = Console.ReadLine().ToUpper();
-                    if (Enum.TryParse<IOgrenci.Sube>(subeStr, out IOgrenci.Sube sube))
+                    Console.Write("Listelemek istediginiz subeyi girin (A, B, C, D, E): ");
+                    string _sube = Console.ReadLine().ToUpper();
+                    if (Enum.TryParse<IOgrenci.Sube>(_sube, out IOgrenci.Sube sube))
                     {
                         SubeyeGoreListele(sube);
                     }
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("\nGeçersiz şube girişi!");
+                        Console.WriteLine("\nGecersiz şube girisi!");
                         Console.ResetColor();
                     }
                     DonguMethod();
                     break;
-                    break;
                 case "3":
-                    CinsiyeteGoreListele();
+                    Console.WriteLine("Listelemek istediginiz cinsiyet tipini girin (E/K)");
+                    string _cinsiyet = Console.ReadLine().ToLower();
+                    if (_cinsiyet == "e" || _cinsiyet == "k")
+                    {
+                        IOgrenci.Cinsiyet cinsiyet = _cinsiyet == "e" ? IOgrenci.Cinsiyet.Erkek : IOgrenci.Cinsiyet.Kadin;
+                        CinsiyeteGoreListele(cinsiyet);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nGeçersiz cinsiyet girişi!");
+                        Console.ResetColor();
+                    }
                     DonguMethod();
                     break;
                 case "4":
-                    TariheGoreListele();
+                    Console.WriteLine("\n4 - Dogum Tarihine Göre Ögrencileri Listele ------------------------------------");
+                    Console.Write("\nHangi tarihten sonraki öğrencileri listelemek istersiniz: (YIL,AY,GÜN) ");
+                    string tarihStr = Console.ReadLine();
+                    DateTime tarih;
+                    if (DateTime.TryParse(tarihStr, out tarih))
+                    {
+                        TariheGoreListele(tarih);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nGeçersiz tarih formatı!");
+                        Console.ResetColor();
+                    }
                     DonguMethod();
                     break;
                 case "5":
@@ -139,12 +163,18 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
         private static void Yazdir(List<IOgrenci> ogrenciler)
         {
             Console.WriteLine();
-            Console.WriteLine("\nSube".PadRight(7) + "No".PadRight(8) + "Adi Soyadi".PadRight(15) + "Not Ort.".PadRight(15) + "Okuduğu Kitap Say.");
-            Console.WriteLine("--------------------------------------------------------------");
-            foreach (var item in ogrenciler)
+            if (ogrenciler.Count != 0)
             {
-                Console.WriteLine($"{item.Subesi.ToString().PadRight(6)}{item.No.ToString().PadRight(8)}{(item.Ad + " " + item.SoyAd).PadRight(15)}{item.No.ToString().PadRight(15)}{item.cinsiyeti}");
+                Console.WriteLine("\nSube".PadRight(7) + "No".PadRight(8) + "Adi Soyadi".PadRight(15) + "Not Ort.".PadRight(15) + "Okuduğu Kitap Say.");
+                Console.WriteLine("--------------------------------------------------------------");
+                foreach (var item in ogrenciler)
+                {
+                    Console.WriteLine($"{item.Subesi.ToString().PadRight(6)}{item.No.ToString().PadRight(8)}{(item.Ad + " " + item.SoyAd).PadRight(15)}{item.No.ToString().PadRight(15)}{item.cinsiyeti}");
+                }
             }
+            else
+                Console.WriteLine("Listede goruntulenecek ogrenci yok");
+
         }
 
         private static void ButunOgrenciListele()
@@ -158,19 +188,24 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
         {
             Liste liste = new Liste();
             List<IOgrenci> subeyeAitOgrenciler = liste.SubeyeGoreListele(sube);
-
-            Console.WriteLine($"\n{sube} şubesine kayıtlı öğrenciler:");
+            Console.WriteLine($"\n{sube} şubesine kayıtlı ogrenciler:");
             Yazdir(subeyeAitOgrenciler);
         }
 
-        private static void CinsiyeteGoreListele()
+        private static void CinsiyeteGoreListele(IOgrenci.Cinsiyet cinsiyet)
         {
-            throw new NotImplementedException();
+            Liste liste = new Liste();
+            List<IOgrenci> cinsiyeteGoreOgrenciler = liste.CinsiyeteGoreListele(cinsiyet);
+            Console.WriteLine($"\n{cinsiyet} cinsiyetli ogrenciler: ");
+            Yazdir(cinsiyeteGoreOgrenciler);
         }
 
-        private static void TariheGoreListele()
+        private static void TariheGoreListele(DateTime tarih)
         {
-            throw new NotImplementedException();
+            Liste liste = new Liste();
+            List<IOgrenci> tariheGoreOgrenciler = liste.TariheGoreListele(tarih);
+            Console.WriteLine($"\n{tarih} tarihinden sonra dogan ogrenciler: ");
+            Yazdir(tariheGoreOgrenciler);
         }
 
         private static void IllereGoreListele()
