@@ -78,11 +78,33 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
                     DonguMethod();
                     break;
                 case "6":
-                    OgrenciTumNotlariListele();
+                    Console.Write("\nÖğrenci numarasını girin: ");
+                    ushort ogrenciNo;
+                    if (ushort.TryParse(Console.ReadLine(), out ogrenciNo))
+                    {
+                        OgrenciDersleriListele(ogrenciNo);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Geçersiz öğrenci numarası!");
+                        Console.ResetColor();
+                    }
                     DonguMethod();
                     break;
                 case "7":
-                    OgrenciKitapListele();
+                    Console.Write("\nÖğrenci numarasını girin: ");
+                    ushort ogrenciNo7;
+                    if (ushort.TryParse(Console.ReadLine(), out ogrenciNo7))
+                    {
+                        OgrenciKitapListele(ogrenciNo7);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Geçersiz öğrenci numarası!");
+                        Console.ResetColor();
+                    }
                     DonguMethod();
                     break;
                 case "8":
@@ -102,11 +124,22 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
                     DonguMethod();
                     break;
                 case "12":
-                    OgrenciNotOrtalamasiGetir();
+                    Console.Write("\nÖğrenci numarasını girin: ");
+                    ushort ogrenciNoo;
+                    if (ushort.TryParse(Console.ReadLine(), out ogrenciNoo))
+                    {
+                        OgrenciNotOrtalamasiGetir(ogrenciNoo);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Geçersiz öğrenci numarası!");
+                        Console.ResetColor();
+                    }
                     DonguMethod();
                     break;
                 case "13":
-                    SubeninNotOrtalamasiGeti();
+                    SubeninNotOrtalamasiGetir();
                     DonguMethod();
                     break;
                 case "14":
@@ -160,8 +193,11 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
                     break;
             }
         }
+      
+
         private static void Yazdir(List<IOgrenci> ogrenciler)
         {
+
             Console.WriteLine();
             if (ogrenciler.Count != 0)
             {
@@ -169,7 +205,7 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
                 Console.WriteLine("--------------------------------------------------------------");
                 foreach (var item in ogrenciler)
                 {
-                    Console.WriteLine($"{item.Subesi.ToString().PadRight(6)}{item.No.ToString().PadRight(8)}{(item.Ad + " " + item.SoyAd).PadRight(15)}{item.No.ToString().PadRight(15)}{item.cinsiyeti}");
+                    Console.WriteLine($"{item.Subesi.ToString().PadRight(6)}{item.No.ToString().PadRight(8)}{(item.Ad + " " + item.SoyAd).PadRight(15)}{item.NotOrtalamasi().ToString().PadRight(15)}{item.OgrenciOkuduguKitaplar.Count}");
                 }
             }
             else
@@ -208,59 +244,245 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
             Yazdir(tariheGoreOgrenciler);
         }
 
+
         private static void IllereGoreListele()
         {
-            throw new NotImplementedException();
+            Liste liste = new Liste();
+            List<IOgrenci> illereGoreOgrenciler = liste.IllereGoreListele();
+
+            Console.WriteLine("\nIllere Göre Ögrencileri Listele --------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("Sube".PadRight(7) + "No".PadRight(8) + "Adı Soyadı".PadRight(15) + "Il".PadRight(15) + "Ilce".PadRight(15) + "Mahalle");
+            Console.WriteLine("-----------------------------------------------------------------------");
+
+            foreach (var ogrenci in illereGoreOgrenciler)
+            {
+                Console.WriteLine($"{ogrenci.Subesi.ToString().PadRight(7)}{ogrenci.No.ToString().PadRight(8)}{(ogrenci.Ad + " " + ogrenci.SoyAd).PadRight(15)}{ogrenci.OgrenciAdresi.Il.PadRight(15)}{ogrenci.OgrenciAdresi.Ilce.PadRight(15)}{ogrenci.OgrenciAdresi.Mahalle}");
+            }
         }
 
-        private static void OgrenciTumNotlariListele()
+        private static void OgrenciDersleriListele(ushort ogrenciNo)
         {
-            throw new NotImplementedException();
+            Liste liste = new Liste();
+            IOgrenci ogrenci = liste.OgrenciListesi.FirstOrDefault(o => o.No == ogrenciNo);
+            if (ogrenci != null)
+            {
+                Console.WriteLine($"\nÖğrencinin Adı Soyadı: {ogrenci.Ad} {ogrenci.SoyAd}");
+                Console.WriteLine($"Öğrencinin Subesi: {ogrenci.Subesi}");
+                Console.WriteLine();
+                Console.WriteLine("Dersin Adi     Notu");
+                Console.WriteLine("--------------------");
+                Console.WriteLine();
+
+                foreach (var ders in ogrenci.OgrenciDersleri)
+                {
+                    Console.WriteLine($"{ders.DersinAdi.PadRight(15)}{ders.Not}");
+                }
+
+
+                double ortalama = ogrenci.OgrenciDersleri.Average(d => d.Not);
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine($"Ortalama:      {ogrenci.NotOrtalamasi()}");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Öğrenci bulunamadı!");
+                Console.ResetColor();
+            }
         }
 
-        private static void OgrenciKitapListele()
+
+        private static void OgrenciKitapListele(ushort ogrenciNo)
         {
-            throw new NotImplementedException();
+            Liste liste = new Liste();
+            IOgrenci ogrenci = liste.OgrenciListesi.FirstOrDefault(o => o.No == ogrenciNo);
+            if (ogrenci != null)
+            {
+                Console.WriteLine($"\nÖğrencinin Adı Soyadı: {ogrenci.Ad} {ogrenci.SoyAd}");
+                Console.WriteLine($"Öğrencinin Subesi: {ogrenci.Subesi}");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Ogrencinin okudugu kitap sayisi: {ogrenci.OgrenciOkuduguKitaplar.Count}");
+                Console.ResetColor();
+                Console.WriteLine("\nÖğrencinin Okudugu Kitaplar");
+                Console.WriteLine("---------------------------");
+                foreach (var item in ogrenci.OgrenciOkuduguKitaplar)
+                {
+                    Console.WriteLine($"{item.KitabınAdı}");
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Öğrenci bulunamadı!");
+                Console.ResetColor();
+            }
         }
 
         private static void OkuldakiEnYuksekNotlu5Ogrenci()
         {
-            throw new NotImplementedException();
+            Liste liste = new Liste();
+            var enYuksekNotluOgrenciler = liste.OgrenciListesi
+                .OrderByDescending(o => o.OgrenciDersleri.Average(d => d.Not))
+                .Take(5)
+                .ToList();
+
+            Console.WriteLine("\nOkuldaki en yüksek 5 notlu öğrenciler:");
+            Yazdir(enYuksekNotluOgrenciler);
         }
 
         private static void OkuldakiEnDusukNotlu3Ogrenci()
         {
-            throw new NotImplementedException();
+            Liste liste = new Liste();
+            var enDusukNotluOgrenciler = liste.OgrenciListesi
+                .OrderBy(o => o.OgrenciDersleri.Average(d => d.Not))
+                .Take(3)
+                .ToList();
+
+            Console.WriteLine("\nOkuldaki en düşük 3 notlu öğrenciler:");
+            Yazdir(enDusukNotluOgrenciler);
         }
 
         private static void SubedekiEnYuksekNotlu5Ogrenci()
         {
-            throw new NotImplementedException();
+            Console.Write("Şube seçiniz (A, B, C, D, E): ");
+            string subeStr = Console.ReadLine().ToUpper();
+
+            if (Enum.TryParse<IOgrenci.Sube>(subeStr, out IOgrenci.Sube sube))
+            {
+                Liste liste = new Liste();
+                var subedekiOgrenciler = liste.SubeyeGoreListele(sube);
+                var enYuksekNotluOgrenciler = subedekiOgrenciler
+                    .OrderByDescending(o => o.OgrenciDersleri.Average(d => d.Not))
+                    .Take(5)
+                    .ToList();
+
+                Console.WriteLine($"\n{sube} şubesindeki en yüksek 5 notlu öğrenciler:");
+                Yazdir(enYuksekNotluOgrenciler);
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Geçersiz şube girişi!");
+                Console.ResetColor();
+            }
         }
+
 
         private static void SubedekiEnDusukNotlu3Ogrenci()
         {
-            throw new NotImplementedException();
+            Console.Write("Şube seçiniz (A, B, C, D, E): ");
+            string subeStr = Console.ReadLine().ToUpper();
+
+            if (Enum.TryParse<IOgrenci.Sube>(subeStr, out IOgrenci.Sube sube))
+            {
+                Liste liste = new Liste();
+                var subedekiOgrenciler = liste.SubeyeGoreListele(sube);
+                var enDusukNotluOgrenciler = subedekiOgrenciler
+                    .OrderBy(o => o.OgrenciDersleri.Average(d => d.Not))
+                    .Take(3)
+                    .ToList();
+
+                Console.WriteLine($"\n{sube} şubesindeki en düşük 3 notlu öğrenciler:");
+                Yazdir(enDusukNotluOgrenciler);
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Geçersiz şube girişi!");
+                Console.ResetColor();
+            }
         }
 
-        private static void OgrenciNotOrtalamasiGetir()
+
+        private static void OgrenciNotOrtalamasiGetir(ushort ogrenciNo)
         {
-            throw new NotImplementedException();
+            Liste liste = new Liste();
+            IOgrenci ogrenci = liste.OgrenciListesi.FirstOrDefault(o => o.No == ogrenciNo);
+            if (ogrenci != null)
+            {
+                Console.WriteLine($"Öğrencinin Adı Soyadı: {ogrenci.Ad} {ogrenci.SoyAd}");
+                Console.WriteLine($"Öğrencinin Subesi: {ogrenci.Subesi}");
+                Console.WriteLine();
+
+                Console.WriteLine($"Ogrencinin not ortalamasi : {ogrenci.NotOrtalamasi() }");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Öğrenci bulunamadı!");
+                Console.ResetColor();
+            }
         }
 
-        private static void SubeninNotOrtalamasiGeti()
+        private static void SubeninNotOrtalamasiGetir()
         {
-            throw new NotImplementedException();
+            Console.Write("Şube seçiniz (A, B, C, D, E): ");
+            string subeStr = Console.ReadLine().ToUpper();
+
+            if (Enum.TryParse<IOgrenci.Sube>(subeStr, out IOgrenci.Sube sube))
+            {
+                Liste liste = new Liste();
+                var subedekiOgrenciler = liste.SubeyeGoreListele(sube);
+
+                if (subedekiOgrenciler.Count > 0)
+                {
+                    double notOrtalamasi = subedekiOgrenciler.Average(o => o.OgrenciDersleri.Average(d => d.Not));
+                    Console.WriteLine($"\n{sube} şubesinin not ortalaması: {notOrtalamasi:F2}");
+                }
+                else
+                {
+                    Console.WriteLine($"Şube {sube} için kayıtlı öğrenci bulunmamaktadır.");
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Geçersiz şube girişi!");
+                Console.ResetColor();
+            }
         }
+
 
         private static void OgrencininSonOkuduguKitabiGetir()
         {
-            throw new NotImplementedException();
+            Console.Write("Öğrenci numarasını girin: ");
+            ushort ogrenciNo;
+            if (ushort.TryParse(Console.ReadLine(), out ogrenciNo))
+            {
+                Liste liste = new Liste();
+                IOgrenci ogrenci = liste.OgrenciListesi.FirstOrDefault(o => o.No == ogrenciNo);
+
+                if (ogrenci != null && ogrenci.OgrenciOkuduguKitaplar.Count > 0)
+                {
+                    string sonKitap = ogrenci.OgrenciOkuduguKitaplar.Last().KitabınAdı;
+                    Console.WriteLine($"\n{ogrenci.Ad} {ogrenci.SoyAd} isimli öğrencinin son okuduğu kitap: {sonKitap}");
+                }
+                else if (ogrenci != null && ogrenci.OgrenciOkuduguKitaplar.Count == 0)
+                {
+                    Console.WriteLine($"\n{ogrenci.Ad} {ogrenci.SoyAd} isimli öğrencinin okuduğu kitap bulunmamaktadır.");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Öğrenci bulunamadı!");
+                    Console.ResetColor();
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Geçersiz öğrenci numarası!");
+                Console.ResetColor();
+            }
         }
+
 
         private static void OgrenciEkle()
         {
-            throw new NotImplementedException();
+            
         }
 
         private static void OgrenciGuncelle()

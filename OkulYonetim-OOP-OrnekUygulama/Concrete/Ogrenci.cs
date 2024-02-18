@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OkulYonetim_OOP_OrnekUygulama.Concrete
 {
-    internal class Ogrenci : IOgrenci
+    public class Ogrenci : IOgrenci 
     {
         string _ad;
         string _soyAd;
@@ -15,8 +15,7 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
         IOgrenci.Sube _sube;
         IOgrenci.Cinsiyet _cinsiyet;
         DateTime _dogumTarihi;
-        
-
+       
         public Ogrenci(string ad, string soyAd, ushort no, IOgrenci.Sube sube, IOgrenci.Cinsiyet cinsiyet, DateTime dogumTarihi )
         {
             _ad = ad;
@@ -25,9 +24,14 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
             _sube = sube;
             _cinsiyet = cinsiyet;
             _dogumTarihi = dogumTarihi;
-            
+            OgrenciDersleri = new List<Ders>();
+            OgrenciOkuduguKitaplar = new List<Kitap>();
         }
-        
+        public double NotOrtalamasi()
+        {
+            return OgrenciDersleri.Average(d => d.Not);
+        }
+
         public string Ad => _ad;
 
         public string SoyAd => _soyAd;
@@ -36,10 +40,17 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
 
         public IOgrenci.Sube Subesi => _sube;
         public IOgrenci.Cinsiyet cinsiyeti => _cinsiyet;
-        
-
-        public List<Ogrenci> OgrenciListesi { get; set; }
-
+               
         public DateTime dogumTarihi => _dogumTarihi;
+
+        public string Mahalle { get; set; }
+        public string Il { get; set; }
+        public string Ilce { get; set; }
+
+        public Adres OgrenciAdresi { get; set; }
+
+        public List<Ders> OgrenciDersleri { get; set; }
+        public List<Kitap> OgrenciOkuduguKitaplar { get; set; }
+       
     }
 }

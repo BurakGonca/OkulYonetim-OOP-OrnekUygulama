@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OkulYonetim_OOP_OrnekUygulama.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,14 @@ namespace OkulYonetim_OOP_OrnekUygulama.Abstract
         Sube Subesi { get; }
         Cinsiyet cinsiyeti { get; }
         DateTime dogumTarihi { get; }
+        string Mahalle { get; set; }
+        string Il { get; set; }
+        string Ilce { get; set; }
+        Adres OgrenciAdresi { get; set; }
+        List<Ders> OgrenciDersleri { get; set; }
+        List<Kitap> OgrenciOkuduguKitaplar {  get; set; }
+
+        double NotOrtalamasi();
 
         enum Sube
         {
