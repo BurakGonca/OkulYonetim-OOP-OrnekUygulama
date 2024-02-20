@@ -9,6 +9,7 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
 {
     internal class Uygulama
     {
+        public static Liste liste = new Liste();
         public static void Calistir()
         {
             Console.WriteLine("------Okul Yönetim Uygulamasi  -----");
@@ -22,7 +23,7 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
             switch (Menu())
             {
                 case "1":
-                    ButunOgrenciListele();
+                    ButunOgrenciListele(liste);
                     DonguMethod();
                     break;
                 case "2":
@@ -147,7 +148,7 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
                     DonguMethod();
                     break;
                 case "15":
-                    OgrenciEkle();
+                    OgrenciEkle(liste);
                     DonguMethod();
                     break;
                 case "16":
@@ -155,7 +156,7 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
                     DonguMethod();
                     break;
                 case "17":
-                    OgrenciSil();
+                    OgrenciSil(liste);
                     DonguMethod();
                     break;
                 case "18":
@@ -193,7 +194,7 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
                     break;
             }
         }
-      
+
 
         private static void Yazdir(List<IOgrenci> ogrenciler)
         {
@@ -201,21 +202,21 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
             Console.WriteLine();
             if (ogrenciler.Count != 0)
             {
-                Console.WriteLine("\nSube".PadRight(7) + "No".PadRight(8) + "Adi Soyadi".PadRight(15) + "Not Ort.".PadRight(15) + "Okuduğu Kitap Say.");
+                Console.WriteLine("\nSube".PadRight(7) + "No".PadRight(8) + "Adi Soyadi".PadRight(25) + "Not Ort.".PadRight(15) + "Okuduğu Kitap Say.");
                 Console.WriteLine("--------------------------------------------------------------");
                 foreach (var item in ogrenciler)
                 {
-                    Console.WriteLine($"{item.Subesi.ToString().PadRight(6)}{item.No.ToString().PadRight(8)}{(item.Ad + " " + item.SoyAd).PadRight(15)}{item.NotOrtalamasi().ToString().PadRight(15)}{item.OgrenciOkuduguKitaplar.Count}");
+                    Console.WriteLine($"{item.Subesi.ToString().PadRight(6)}{item.No.ToString().PadRight(8)}{(item.Ad + " " + item.SoyAd).PadRight(25)}{item.NotOrtalamasi().ToString().PadRight(15)}{item.OgrenciOkuduguKitaplar.Count}");
                 }
             }
             else
                 Console.WriteLine("Listede goruntulenecek ogrenci yok");
 
         }
-
-        private static void ButunOgrenciListele()
+                
+        private static void ButunOgrenciListele(Liste liste)
         {
-            Liste liste = new Liste();
+            
             List<IOgrenci> butunOgrenciListe = liste.OgrenciListesi;
             Yazdir(butunOgrenciListe);
         }
@@ -263,7 +264,7 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
 
         private static void OgrenciDersleriListele(ushort ogrenciNo)
         {
-            Liste liste = new Liste();
+            //Liste liste = new Liste();
             IOgrenci ogrenci = liste.OgrenciListesi.FirstOrDefault(o => o.No == ogrenciNo);
             if (ogrenci != null)
             {
@@ -407,7 +408,7 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
                 Console.WriteLine($"Öğrencinin Subesi: {ogrenci.Subesi}");
                 Console.WriteLine();
 
-                Console.WriteLine($"Ogrencinin not ortalamasi : {ogrenci.NotOrtalamasi() }");
+                Console.WriteLine($"Ogrencinin not ortalamasi : {ogrenci.NotOrtalamasi()}");
             }
             else
             {
@@ -480,9 +481,98 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
         }
 
 
-        private static void OgrenciEkle()
+        private static void OgrenciEkle(Liste liste)
         {
-            
+            Ogrenci yeniOgrenci = new Ogrenci();
+
+            yeniOgrenci.OgrenciOkuduguKitaplar = new List<Kitap>();
+            yeniOgrenci.OgrenciDersleri = new List<Ders>();
+
+            Console.WriteLine("\n15-Öğrenci Ekle -----------------------------------------------------");
+            Console.Write("\nOgrencinin numarasi: ");
+            ushort no = ushort.Parse(Console.ReadLine());
+            Console.Write("\nOgrencinin Adi: ");
+            string ad = Console.ReadLine();
+            Console.Write("\nOgrencinin Soyadi: ");
+            string soyAd = Console.ReadLine();
+
+            bool kontrol = true;
+            while (kontrol)
+            {
+                Console.Write("\nOgrencinin Subesi (A/B/C/D/E) : ");
+                string sube = Console.ReadLine().ToUpper();
+                switch (sube)
+                {
+                    case "A":
+                        yeniOgrenci.Subesi = IOgrenci.Sube.A;
+                        kontrol = false;
+                        break;
+                    case "B":
+                        yeniOgrenci.Subesi = IOgrenci.Sube.B;
+                        kontrol = false;
+                        break;
+                    case "C":
+                        yeniOgrenci.Subesi = IOgrenci.Sube.C;
+                        kontrol = false;
+                        break;
+                    case "D":
+                        yeniOgrenci.Subesi = IOgrenci.Sube.D;
+                        kontrol = false;
+                        break;
+                    case "E":
+                        yeniOgrenci.Subesi = IOgrenci.Sube.E;
+                        kontrol = false;
+                        break;
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nYanlis bir sube secimi yaptiniz!");
+                        Thread.Sleep(2000);
+                        Console.ResetColor();
+                        kontrol = true;
+                        break;
+                }
+            }
+            kontrol = true;
+            while (kontrol)
+            {
+                Console.Write("\nOgrencinin Cinsiyeti (K/E) : ");
+                string cinsiyet = Console.ReadLine().ToUpper();
+                switch (cinsiyet)
+                {
+                    case "K":
+                        yeniOgrenci.cinsiyeti = IOgrenci.Cinsiyet.Kadin;
+                        kontrol = false;
+                        break;
+                    case "E":
+                        yeniOgrenci.cinsiyeti = IOgrenci.Cinsiyet.Erkek;
+                        kontrol = false;
+                        break;
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nYanlis cinsiyet secimi yaptiniz!");
+                        Thread.Sleep(2000);
+                        Console.ResetColor();
+                        kontrol = true;
+                        break;
+                }
+            }
+
+            Console.Write("\nOgrencinin Dogum Tarihi: (YYYY,AA,GG) : ");
+            DateTime dt;
+            while (!DateTime.TryParse(Console.ReadLine(), out dt))
+            {
+                Console.WriteLine("\nLutfen dogum tarihini (YYYY,AA,GG) seklinde giriniz");
+                Console.Write("\nOgrencinin Dogum Tarihi: (YYYY,AA,GG) : ");
+            }
+            yeniOgrenci.dogumTarihi = dt;
+            yeniOgrenci.Ad = ad;
+            yeniOgrenci.SoyAd = soyAd;
+            yeniOgrenci.No = no;
+
+            Console.WriteLine($"\n{yeniOgrenci.No} no'lu ogrenci basariyla kaydedilmistir.");
+                        
+            liste.OgrenciEkle(yeniOgrenci);
+            Console.WriteLine();
         }
 
         private static void OgrenciGuncelle()
@@ -490,9 +580,35 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
             throw new NotImplementedException();
         }
 
-        private static void OgrenciSil()
+
+        private static void OgrenciSil(Liste liste)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("\n16-Öğrenci Sil -----------------------------------------------------");
+            Console.Write("\nSilmek istediğiniz öğrencinin numarası: ");
+            ushort no = ushort.Parse(Console.ReadLine());
+
+
+            IOgrenci ogrenci = liste.OgrenciListesi.FirstOrDefault(o => o.No == no);
+            if (ogrenci != null)
+            {
+                Console.WriteLine($"\nÖğrencinin Adı Soyadı: {ogrenci.Ad} {ogrenci.SoyAd}");
+                Console.WriteLine($"\nÖğrencinin Subesi: {ogrenci.Subesi}");
+                Console.WriteLine();
+
+                Console.Write("Ogreniciyi silmek istediginize emin misiniz (E/H)");
+                string secim = Console.ReadLine().ToUpper();
+
+                if (ogrenci != null && secim=="E")
+                {
+                    liste.OgrenciListesi.Remove(ogrenci);
+                    Console.WriteLine($"{no} no'lu öğrenci başarıyla silinmiştir.");
+                }
+                else
+                {
+                    Console.WriteLine("Bu numaraya sahip bir öğrenci bulunamadı.");
+                }
+                Console.WriteLine();
+            }
         }
 
         private static void OgrencininAdresiGir()
@@ -546,3 +662,4 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
 
     }
 }
+    

@@ -27,21 +27,47 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
             OgrenciDersleri = new List<Ders>();
             OgrenciOkuduguKitaplar = new List<Kitap>();
         }
+        public Ogrenci() { }
         public double NotOrtalamasi()
         {
             return OgrenciDersleri.Average(d => d.Not);
         }
 
-        public string Ad => _ad;
+        public string Ad
+        {
+            get { return _ad; }
+            set { _ad = value; }
+        }
 
-        public string SoyAd => _soyAd;
+        public string SoyAd
+        {
+            get { return _soyAd; }
+            set { _soyAd = value; }
+        }
 
-        public ushort No => _No;
+        public ushort No
+        {
+            get { return _No; }
+            set { _No = value; }
+        }
 
-        public IOgrenci.Sube Subesi => _sube;
-        public IOgrenci.Cinsiyet cinsiyeti => _cinsiyet;
-               
-        public DateTime dogumTarihi => _dogumTarihi;
+        public IOgrenci.Sube Subesi
+        {
+            get { return _sube; }
+            set { _sube = value; }
+        }
+
+        public IOgrenci.Cinsiyet cinsiyeti
+        {
+            get { return _cinsiyet; }
+            set { _cinsiyet = value; }
+        }
+
+        public DateTime dogumTarihi
+        {
+            get { return _dogumTarihi; }
+            set { _dogumTarihi = value; }
+        }
 
         public string Mahalle { get; set; }
         public string Il { get; set; }

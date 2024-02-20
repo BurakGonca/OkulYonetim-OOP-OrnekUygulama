@@ -7,14 +7,18 @@ using System.Threading.Tasks;
 
 namespace OkulYonetim_OOP_OrnekUygulama.Concrete
 {
-    internal class Liste : IList
+    public class Liste : IList
     {
+        
         public List<IOgrenci> OgrenciListesi { get; set; }
 
         List<Ogrenci> TumOgrenciListesi = new List<Ogrenci>();
         public Liste()
         {
             OgrenciGirisleri();
+
+            OgrenciListesi = new List<IOgrenci>(TumOgrenciListesi);
+
         }
 
         private void OgrenciGirisleri()
@@ -151,6 +155,15 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
             TumOgrenciListesi.Add(selda);
 
             OgrenciListesi = new List<IOgrenci>(TumOgrenciListesi);
+
+        }
+
+        public void OgrenciEkle(Ogrenci yeniOgrenci)
+        {
+            TumOgrenciListesi.Add(yeniOgrenci);
+            OgrenciListesi.Add(yeniOgrenci);
+            yeniOgrenci.OgrenciOkuduguKitaplar.Add(new Kitap("Nutuk")); 
+            yeniOgrenci.OgrenciDersleri.Add(new Ders("Turkce", 0));  
 
         }
 
