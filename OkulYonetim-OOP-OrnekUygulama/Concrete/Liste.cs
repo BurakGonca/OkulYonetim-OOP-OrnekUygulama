@@ -167,6 +167,28 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
 
         }
 
+        public void OgrenciGuncelle(IOgrenci eskiOgrenci, Ogrenci yeniOgrenci)
+        {
+            for (int i = 0; i < TumOgrenciListesi.Count; i++)
+            {
+                if (TumOgrenciListesi[i].No == eskiOgrenci.No) 
+                {
+                    TumOgrenciListesi[i] = yeniOgrenci;
+                    yeniOgrenci.OgrenciOkuduguKitaplar.Add(new Kitap("Nutuk"));
+                    yeniOgrenci.OgrenciDersleri.Add(new Ders("Turkce", 0) );
+                    break; 
+                }
+            }
+
+            
+            OgrenciListesi = new List<IOgrenci>(TumOgrenciListesi);
+        }
+
+
+
+
+
+
         public List<IOgrenci> SubeyeGoreListele(IOgrenci.Sube sube)
         {
             return OgrenciListesi.Where(o => o.Subesi == sube).ToList();

@@ -27,7 +27,11 @@ namespace OkulYonetim_OOP_OrnekUygulama.Concrete
             OgrenciDersleri = new List<Ders>();
             OgrenciOkuduguKitaplar = new List<Kitap>();
         }
-        public Ogrenci() { }
+        public Ogrenci()
+        {
+            OgrenciOkuduguKitaplar = new List<Kitap>();
+            OgrenciDersleri = new List<Ders>();
+        }
         public double NotOrtalamasi()
         {
             return OgrenciDersleri.Average(d => d.Not);

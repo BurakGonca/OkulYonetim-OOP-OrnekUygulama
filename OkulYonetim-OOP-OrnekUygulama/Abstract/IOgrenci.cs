@@ -9,12 +9,12 @@ namespace OkulYonetim_OOP_OrnekUygulama.Abstract
 {
     public interface IOgrenci
     {
-        string Ad { get; }
-        string SoyAd { get; }
-        ushort No { get; }
-        Sube Subesi { get; }
-        Cinsiyet cinsiyeti { get; }
-        DateTime dogumTarihi { get; }
+        string Ad { get; set; }
+        string SoyAd { get; set; }
+        ushort No { get; set; }
+        Sube Subesi { get; set; }
+        Cinsiyet cinsiyeti { get; set; }
+        DateTime dogumTarihi { get; set; }
         string Mahalle { get; set; }
         string Il { get; set; }
         string Ilce { get; set; }
